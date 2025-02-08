@@ -1,25 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { createPrompt } from "@/lib/db"
-import { useSession } from "next-auth/react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createPrompt } from "../actions";
+import { Session } from "next-auth";
 
-export default function AddPromptForm() {
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [categories, setCategories] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const router = useRouter()
-  const { data: session } = useSession()
+export default function AddPromptForm({ session }: { session?: Session }) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [categories, setCategories] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!session?.user?.id) {
-      alert("You must be logged in to create a prompt")
-      return
+      alert("You must be logged in to create a prompt");
+      return;
     }
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       await createPrompt({
@@ -27,24 +26,27 @@ export default function AddPromptForm() {
         content,
         categories: categories.split(",").map((c) => c.trim()),
         authorId: session.user.id,
-      })
+      });
 
       // Limpar o formulário e redirecionar para a página inicial
-      setTitle("")
-      setContent("")
-      setCategories("")
-      router.push("/")
-      router.refresh() // Força a atualização dos dados na página inicial
+      setTitle("");
+      setContent("");
+      setCategories("");
+      router.push("/");
+      router.refresh(); // Força a atualização dos dados na página inicial
     } catch (error) {
-      console.error("Erro ao criar prompt:", error)
-      alert("Ocorreu um erro ao criar o prompt. Por favor, tente novamente.")
+      console.error("Erro ao criar prompt:", error);
+      alert("Ocorreu um erro ao criar o prompt. Por favor, tente novamente.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md"
+    >
       <div className="mb-4">
         <label htmlFor="title" className="block mb-2 font-semibold">
           Título:
@@ -102,6 +104,5 @@ export default function AddPromptForm() {
         </button>
       </div>
     </form>
-  )
+  );
 }
-

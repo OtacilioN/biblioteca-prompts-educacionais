@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { createUser } from "@/lib/db"
+import { createUser } from "../actions"
 
 export default function CadastroPage() {
   const [name, setName] = useState("")
