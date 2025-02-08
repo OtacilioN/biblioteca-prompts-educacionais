@@ -44,7 +44,7 @@ export async function createPrompt(data: {
   });
   return {
     ...prompt,
-    categories: prompt.categories.split(",").map((c) => c.trim()),
+    categories: prompt.categories.split(",").map((c: string) => c.trim()),
   };
 }
 
