@@ -1,41 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const result = await signIn("credentials", {
         redirect: false,
         email,
         password,
-      })
+      });
 
       if (result?.error) {
-        setError("Credenciais inválidas")
+        setError("Credenciais inválidas");
       } else {
-        router.push("/")
+        router.push("/");
       }
     } catch (error) {
-      console.error("Erro ao fazer login:", error)
-      setError("Ocorreu um erro ao fazer login")
+      console.error("Erro ao fazer login:", error);
+      setError("Ocorreu um erro ao fazer login");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Faça login na sua conta</h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Faça login na sua conta
+          </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
@@ -86,12 +88,14 @@ export default function LoginPage() {
           </div>
         </form>
         <div className="text-center">
-          <Link href="/cadastro" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <Link
+            href="/cadastro"
+            className="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             Não tem uma conta? Cadastre-se
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
