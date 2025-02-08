@@ -1,31 +1,34 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import PromptCard from "./PromptCard"
+import { useState, useEffect } from "react";
+import PromptCard from "./PromptCard";
 
 interface Prompt {
-  id: string
-  title: string
-  content: string
-  author: string
-  categories: string[]
+  id: string;
+  title: string;
+  content: string;
+  author: { name: string };
+  categories: string[];
 }
 
 interface PromptWallProps {
-  initialPrompts: Prompt[]
+  prompts: Prompt[];
 }
 
-export default function PromptWall({ initialPrompts }: PromptWallProps) {
-  const [prompts, setPrompts] = useState<Prompt[]>(initialPrompts)
-  const [categories, setCategories] = useState<string[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+export default function PromptWall({ prompts }: PromptWallProps) {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   useEffect(() => {
-    const allCategories = Array.from(new Set(prompts.flatMap((p) => p.categories)))
-    setCategories(allCategories)
-  }, [prompts])
+    const allCategories = Array.from(
+      new Set(prompts.flatMap((p) => p.categories))
+    );
+    setCategories(allCategories);
+  }, [prompts]);
 
-  const filteredPrompts = selectedCategory ? prompts.filter((p) => p.categories.includes(selectedCategory)) : prompts
+  const filteredPrompts = selectedCategory
+    ? prompts.filter((p) => p.categories.includes(selectedCategory))
+    : prompts;
 
   return (
     <div>
@@ -53,6 +56,5 @@ export default function PromptWall({ initialPrompts }: PromptWallProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
-
