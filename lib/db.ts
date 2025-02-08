@@ -24,7 +24,7 @@ export async function getPrompts() {
       },
     },
   });
-  return prompts.map((prompt: { categories: string }) => ({
+  return prompts.map((prompt) => ({
     ...prompt,
     categories: prompt.categories.split(",").map((c: string) => c.trim()),
   }));
